@@ -1,0 +1,182 @@
+---
+title: "Simple Regression Assignment"
+output:
+  md_document:
+    variant: markdown_github
+---
+
+#  Simple Regression
+
+This R markdown document provides an example of performing a simple regression using the lm() function in R and compares the output with the linReg() function in the jmv (Jamovi) package.
+
+## Package management in R
+
+```{r}
+# keep a list of the packages used in this script
+packages <- c("tidyverse","rio","jmv")
+```
+
+This next code block has eval=FALSE because you don't want to run it when knitting the file. Installing packages when knitting an R notebook can be problematic.
+
+```{r eval=FALSE}
+# check each of the packages in the list and install them if they're not installed already
+for (i in packages){
+  if(! i %in% installed.packages()){
+    install.packages(i,dependencies = TRUE)
+  }
+  # show each package that is checked
+  print(i)
+}
+```
+
+```{r}
+# load each package into memory so it can be used in the script
+for (i in packages){
+  library(i,character.only=TRUE)
+  # show each package that is loaded
+  print(i)
+}
+```
+
+## Simple Regression
+
+Simple regression is predicting a continuous outcome variable (dependent variable) with a single continuous predictor variable (independent variable). You can perform regressions using categorical variable, but we'll talk more about that later.
+
+## Open data file
+
+The rio package works for importing several different types of data files. We're going to use it in this class. There are other packages which can be used to open datasets in R. You can see several options by clicking on the Import Dataset menu under the Environment tab in RStudio. (For a csv file like we have this week we'd use either From Text(base) or From Text (readr). Try it out to see the menu dialog.)
+
+```{r}
+# import the Week3.rds dataset into RStudio
+# Using the file.choose() command allows you to select a file to import from another folder.
+# dataset <- rio::import(file.choose())
+# This command will allow us to import the rds file included in our project folder.
+dataset <- rio::import("Album Sales.sav")
+```
+
+## Get R code from Jamovi output
+
+You can get the R code for most of the analyses you do in Jamovi.
+
+1. Click on the three vertical dots at the top right of the Jamovi window.
+2. Click on the Syndax mode check box at the bottom of the Results section.
+3. Close the Settings window by clicking on the Hide Settings arrow at the top right of the settings menu.
+4. you should now see the R code for each of the analyses you just ran.
+
+## lm() function in R
+
+Many linear models are calculated in R using the lm() function. We'll look at how to perform a simple regression using the lm() function since it's so common.
+
+#### Visualization
+
+```{r}
+ggplot(dataset, aes(x = Adverts, y = Sales)) +
+  geom_point() +
+  stat_smooth(method = lm)
+```
+
+#### Computation
+
+```{r}
+model <- lm(formula = Sales ~ Adverts, data = dataset)
+model
+```
+
+#### Model assessment
+
+```{r}
+summary(model)
+```
+
+#### Standardized residuals from lm()
+
+You might notice lm() does not provide the standardized residuals. Those must me calculated separately.
+
+```{r}
+standardized = lm(scale(Sales) ~ scale(Adverts), data=dataset)
+summary(standardized)
+```
+
+
+## function in Jamovi
+
+Compare the output from the lm() function with the output from the function in the jmv package.
+
+```{r}
+jmv::linReg(
+  data = dataset,
+  dep = Sales,
+  covs = Adverts,
+  blocks = list(list("Adverts")),
+  refLevels = list(),
+  modelTest = TRUE,
+  anova = TRUE,
+  ci = TRUE,
+  stdEst = TRUE,
+  ciStdEst = TRUE)
+```
+
+
+#### What decision would you make about the null hypothesis?
+
+* State your decision on the answer sheet. (See 4h.)
+* Interpret the meaning of this result in plain language on the answer sheet.
+ 
+
+## Create a plot for the interaction
+
+I couldn't see how to create a scatterplot matrix in Jamovi right away so I found some R functions. The code is below.
+
+```{r}
+# The pairs and plots functions are part of baseR
+
+# pairs using column numbers
+pairs(data[,2:4], pch = 19)
+
+# pairs using formula format
+pairs(~Revise + Exam + Anxiety, data=data, pch = 19)
+
+# Plot
+plot(data[ , 2:4] , pch=20 , cex=1.5 , col="#69b3a2")
+
+
+# the ggpairs function is part of GGally package which expands ggplot2 package
+
+library(ggplot2)
+library(GGally)
+
+# ggpairs using column numbers
+GGally::ggpairs(data,columns=2:4)
+
+# ggpairs using column names
+GGally::ggpairs(data,columns=c('Revise','Exam','Anxiety'),lower = list(continuous = "smooth"))
+
+```
+
+
+
+#### Report results
+
+* Report appropriate results on the answer sheet. See Field chapter 14.11. (See 4i.)
+
+#### Alternatives if assumptions are violated
+
+* What options are available if any of your assumptions are violated? (See 2dii.)
+
+## Feedback
+
+#### What did you think of this assignment?
+Answer:
+
+#### What would you change?
+Answer:
+
+## Save your output.
+Save your answer sheet and your Jamovi file and turn them in for your assignment.
+
+Save your Jamovi file.
+
+#### File - Save - Browse - Navigate to desired folder - Name the file - Make sure the file type is jamovi file (.omv)
+
+## Submit your assignment.
+Submit the RStudio .html output you just saved and your Jamovi .omv file for your assignment.
