@@ -56,9 +56,9 @@ In statistics, we focus on four areas. (Summarized from the videos above.)
 3. outliers
 4. Statistical assumptions
 
-### Pearson's correlation
+### Simple Regression
 
-Pearson's correlation is used with continuous data. It is used to assess the strength and direction of the relationship between two variables. This assignment illustrates steps to perform calculate Pearson's correlation between pairwise combinations of 2 or more variables. The Pearson's correlation belongs to a family of tests known as parametric tests and have similar distributional assumptions.
+Simple regression is used to predict the value of a continuous variable from a single continuous variable. Not only does it assess the strength and direction of the relationship between two variables, but it calculates where the outcome variable is centered. The simple linear regression belongs to a family of tests known as parametric tests and has similar distributional assumptions.
 
 ### Jamovi part
 
