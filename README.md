@@ -1,4 +1,4 @@
-# Simple Regression Tutorial
+# Simple Regression Exercise
 
 ## Summary of steps to complete
 
