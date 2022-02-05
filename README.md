@@ -1,5 +1,7 @@
 # Simple Regression Exercise
 
+A video demonstration of this assignment can be found at: https://youtu.be/bGCZAhd2bug
+
 ## Summary of steps to complete
 
 - [ ] Fork this repository so you have your own copy to work on.
